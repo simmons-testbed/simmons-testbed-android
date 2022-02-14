@@ -1,12 +1,19 @@
 package com.simmons.testbed.model
 
+import com.google.gson.JsonObject
 import com.simmons.testbed.api.SimmonsAPI
+import javax.inject.Inject
 
-class SimmonsRepository(private val simmonsAPI: SimmonsAPI) {
+class SimmonsRepository @Inject constructor(private val simmonsAPI: SimmonsAPI) {
 
     suspend fun setBound(xBoundary: String, yBoundary: String): Int? {
         return try {
-            simmonsAPI.setBound(xBoundary, yBoundary).body()
+            val jsonObject = JsonObject().apply {
+                addProperty("xboundary", xBoundary)
+                addProperty("yboundary", yBoundary)
+            }
+
+            simmonsAPI.setBound(jsonObject).body()
         } catch (e: Exception) {
             null
         }
@@ -14,7 +21,12 @@ class SimmonsRepository(private val simmonsAPI: SimmonsAPI) {
 
     suspend fun setStoreNum(nowCheck: String, howMany: String): Int? {
         return try {
-            simmonsAPI.setStoreNum(nowCheck, howMany).body()
+            val jsonObject = JsonObject().apply {
+                addProperty("nowcheck", nowCheck)
+                addProperty("howmany", howMany)
+            }
+
+            simmonsAPI.setStoreNum(jsonObject).body()
         } catch (e: Exception) {
             null
         }

@@ -1,23 +1,27 @@
 package com.simmons.testbed.api
 
+import com.google.gson.JsonObject
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface SimmonsAPI {
+
+    @Headers("Content-Type: application/json")
     @POST("setBound")
     suspend fun setBound(
-        @Query("xboundary") xBoundary: String,
-        @Query("yboundary") yBoundary: String
+        @Body body: JsonObject
     ): Response<Int>
 
+    @Headers("Content-Type: application/json")
     @POST("storeNum")
     suspend fun setStoreNum(
-        @Query("nowcheck") nowCheck: String,
-        @Query("howmany") howMany: String
+        @Body body: JsonObject
     ): Response<Int>
 
+    @Headers("Content-Type: application/json")
     @GET("check")
     fun getCheckStatus(): Response<Int>
 }
