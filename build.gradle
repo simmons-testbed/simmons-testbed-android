@@ -6,6 +6,9 @@ buildscript {
         okhttpVersion = "4.9.3"
         gsonVersion = "2.8.9"
         viewModelVersion = "2.4.1"
+        hiltVersion = "2.38.1"
+        activityVersion = "1.4.0"
+        fragmentVersion = "1.4.1"
     }
     repositories {
         google()
@@ -15,8 +18,8 @@ buildscript {
         classpath "com.android.tools.build:gradle:7.0.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        // Hilt
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
     }
 }
 
