@@ -1,8 +1,9 @@
-package com.simmons.testbed
+package com.simmons.testbed.ui.check
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import com.simmons.testbed.R
 import com.simmons.testbed.databinding.ActivityCheckBinding
 
 class CheckActivity : AppCompatActivity() {

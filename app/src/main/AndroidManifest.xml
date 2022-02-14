@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Testbed">
         <activity
-            android:name=".CheckActivity"
+            android:name="com.simmons.testbed.ui.check.CheckActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
