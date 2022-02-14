@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.MainActivity">
+        tools:context=".ui.MainActivity">
 
         <EditText
             android:id="@+id/et_bound_x"
@@ -35,18 +35,41 @@
             app:layout_constraintStart_toStartOf="@id/et_bound_x"
             app:layout_constraintTop_toBottomOf="@id/et_bound_x" />
 
+        <EditText
+            android:id="@+id/et_store_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:hint=" 체크할 인원"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@id/et_bound_x"
+            app:layout_constraintStart_toStartOf="@id/et_bound_x"
+            app:layout_constraintTop_toBottomOf="@id/et_bound_y" />
+
         <Button
             android:id="@+id/btn_set_bound"
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="30dp"
             android:layout_height="70dp"
-            android:text="제출"
-            android:textSize="18sp"
+            android:layout_marginHorizontal="30dp"
             android:enabled="false"
+            android:text="아이 이동반경 검사하기"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_bound_y" />
+            app:layout_constraintTop_toBottomOf="@id/et_store_num" />
+
+        <TextView
+            android:id="@+id/tv_check_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="결과"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_set_bound" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

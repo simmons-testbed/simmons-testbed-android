@@ -23,5 +23,5 @@ interface SimmonsAPI {
 
     @Headers("Content-Type: application/json")
     @GET("check")
-    fun getCheckStatus(): Response<Int>
+    suspend fun getCheckStatus(): Response<Int>
 }

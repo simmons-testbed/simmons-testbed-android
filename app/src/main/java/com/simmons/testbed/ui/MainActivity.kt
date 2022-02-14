@@ -1,16 +1,15 @@
-package com.simmons.testbed.ui.main
+package com.simmons.testbed.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.simmons.testbed.R
 import com.simmons.testbed.databinding.ActivityMainBinding
-import com.simmons.testbed.ui.check.CheckActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private var isRun: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +35,37 @@ class MainActivity : AppCompatActivity() {
         viewModel.yBoundary.observe(this, {
             viewModel.setIsDataIsNotNull()
         })
+        viewModel.howMany.observe(this, {
+            viewModel.setIsDataIsNotNull()
+        })
         viewModel.isDataIsNotNull.observe(this, {
             setButtonActive(it)
         })
         viewModel.isValidToSetBound.observe(this, {
-            if (it){
-                moveToCheckActivity()
+            if (it) {
+                viewModel.checkValid()
             } else {
                 Toast.makeText(this, "유효한 경계값을 입력해주세요", Toast.LENGTH_SHORT).show()
+            }
+        })
+        viewModel.isValidToSetStoreNum.observe(this, {
+            if (it) {
+                viewModel.checkValid()
+            } else {
+                Toast.makeText(this, "이미 센서가 실행중이니 중지 후 데이터를 변경해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        })
+        viewModel.isValid.observe(this, {
+            viewModel.getCheckData()
+        })
+        viewModel.checkStatus.observe(this, {
+            binding.tvCheckResult.visibility = View.VISIBLE
+            binding.tvCheckResult.text = when (it) {
+                3 -> "체크 인원수가 센서 범위내 인원수와 일치하지 않습니다."
+                2 -> "아이가 이동반경 범위에서 벗어났습니다."
+                1 -> "아이가 이동반경 오차범위(5) 이내에 위치합니다."
+                0 -> "아이가 이동반경 범위 내에 있습니다."
+                else -> return@observe
             }
         })
     }
@@ -51,16 +74,12 @@ class MainActivity : AppCompatActivity() {
         binding.btnSetBound.isEnabled = isActive
     }
 
-    private fun moveToCheckActivity() {
-        startActivity(Intent(baseContext, CheckActivity::class.java))
-    }
-
     private fun setEditTextListener() {
-        binding.etBoundX.addTextChangedListener(object: TextWatcher{
+        binding.etBoundX.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s == null){
+                if (s == null || s.toString().isEmpty()) {
                     viewModel.setXBoundary(null)
                 } else {
                     viewModel.setXBoundary(s.toString())
@@ -69,14 +88,27 @@ class MainActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
-        binding.etBoundY.addTextChangedListener(object: TextWatcher{
+        binding.etBoundY.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s == null){
+                if (s == null || s.toString().isEmpty()) {
                     viewModel.setYBoundary(null)
                 } else {
                     viewModel.setYBoundary(s.toString())
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        binding.etStoreNum.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s == null || s.toString().isEmpty() ) {
+                    viewModel.setHowMany(null)
+                } else {
+                    viewModel.setHowMany(s.toString())
                 }
             }
 
@@ -86,7 +118,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setOnClickListener() {
         binding.btnSetBound.setOnClickListener {
-            viewModel.setBound()
+            if (isRun) {
+                isRun = false
+                viewModel.stopCheck()
+                binding.btnSetBound.text = "아이 이동반경 검사하기"
+                binding.tvCheckResult.visibility = View.INVISIBLE
+            } else {
+                isRun = true
+                viewModel.setData()
+                binding.btnSetBound.text = "중지하기"
+            }
         }
     }
 }

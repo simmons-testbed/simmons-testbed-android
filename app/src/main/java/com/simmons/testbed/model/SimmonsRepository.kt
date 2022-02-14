@@ -32,7 +32,7 @@ class SimmonsRepository @Inject constructor(private val simmonsAPI: SimmonsAPI) 
         }
     }
 
-    fun getCheckStatus(): Int? {
+    suspend fun getCheckStatus(): Int? {
         return try {
             simmonsAPI.getCheckStatus().body()
         } catch (e: Exception) {
