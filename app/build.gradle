@@ -37,6 +37,9 @@ android {
 
 dependencies {
 
+    // viewModelScope
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
+
     // Gson
     implementation "com.google.code.gson:gson:$gsonVersion"
 
