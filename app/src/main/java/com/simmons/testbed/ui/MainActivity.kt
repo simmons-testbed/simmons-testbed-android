@@ -2,6 +2,8 @@ package com.simmons.testbed.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -20,6 +22,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private var isRun: Boolean = false
+    private val handler = Handler(Looper.getMainLooper())
+    private val handlerTask = object: Runnable {
+        override fun run() {
+            if (isRun){
+                viewModel.getCheckData()
+                handler.postDelayed(this, 1000)
+            }
+        }
+    }
 
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")
 
@@ -60,7 +71,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
         viewModel.isValid.observe(this, {
-            viewModel.getCheckData()
+            checkDataRepeated()
+//            viewModel.getCheckData()
         })
         viewModel.checkStatus.observe(this, {
             binding.tvCheckResult.visibility = View.VISIBLE
@@ -136,5 +148,9 @@ class MainActivity : AppCompatActivity() {
                 binding.btnSetBound.text = "중지하기"
             }
         }
+    }
+
+    private fun checkDataRepeated(){
+        handler.post(handlerTask)
     }
 }
