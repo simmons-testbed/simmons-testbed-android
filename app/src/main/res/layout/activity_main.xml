@@ -61,6 +61,18 @@
             app:layout_constraintTop_toBottomOf="@id/et_store_num" />
 
         <TextView
+            android:id="@+id/tv_check_result_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="2022.02.15 12:10:10"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_set_bound" />
+
+        <TextView
             android:id="@+id/tv_check_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,6 +82,6 @@
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_set_bound" />
+            app:layout_constraintTop_toBottomOf="@id/tv_check_result_time" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

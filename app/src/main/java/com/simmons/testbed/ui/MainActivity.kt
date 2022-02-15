@@ -11,6 +11,8 @@ import androidx.databinding.DataBindingUtil
 import com.simmons.testbed.R
 import com.simmons.testbed.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private var isRun: Boolean = false
+
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         })
         viewModel.checkStatus.observe(this, {
             binding.tvCheckResult.visibility = View.VISIBLE
+            binding.tvCheckResultTime.visibility = View.VISIBLE
             binding.tvCheckResult.text = when (it) {
                 3 -> "체크 인원수가 센서 범위내 인원수와 일치하지 않습니다."
                 2 -> "아이가 이동반경 범위에서 벗어났습니다."
@@ -67,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                 0 -> "아이가 이동반경 범위 내에 있습니다."
                 else -> return@observe
             }
+            binding.tvCheckResultTime.text = LocalDateTime.now().format(formatter)
         })
     }
 
@@ -105,7 +111,7 @@ class MainActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s == null || s.toString().isEmpty() ) {
+                if (s == null || s.toString().isEmpty()) {
                     viewModel.setHowMany(null)
                 } else {
                     viewModel.setHowMany(s.toString())
@@ -123,6 +129,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.stopCheck()
                 binding.btnSetBound.text = "아이 이동반경 검사하기"
                 binding.tvCheckResult.visibility = View.INVISIBLE
+                binding.tvCheckResultTime.visibility = View.INVISIBLE
             } else {
                 isRun = true
                 viewModel.setData()
