@@ -40,11 +40,65 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
-            android:hint=" 체크할 인원"
+            android:hint="체크할 인원"
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="@id/et_bound_x"
             app:layout_constraintStart_toStartOf="@id/et_bound_x"
             app:layout_constraintTop_toBottomOf="@id/et_bound_y" />
+
+        <TextView
+            android:id="@+id/tv_cry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="울음 종류를 선택하세요"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_store_num" />
+
+        <RadioGroup
+            android:id="@+id/rg_cry_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_cry">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 울음" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. 코골이" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. 웃음" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. 침묵" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/iv_cry_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="선택한 울음소리 재생하기"
+            android:visibility="invisible"
+            app:drawableEndCompat="@drawable/ic_baseline_play_circle_24"
+            app:drawableTint="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rg_cry_select" />
 
         <Button
             android:id="@+id/btn_set_bound"
@@ -58,7 +112,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_store_num" />
+            app:layout_constraintTop_toBottomOf="@id/rg_cry_select" />
 
         <TextView
             android:id="@+id/tv_check_result_time"
@@ -83,5 +137,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_check_result_time" />
+
+        <TextView
+            android:id="@+id/tv_cry_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="울음소리 결과"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_check_result" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
