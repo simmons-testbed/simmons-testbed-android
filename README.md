@@ -12,6 +12,8 @@
 Tech stack
 - Android Studio Artic Fox
 - Kotlin 1.6.10
+- minSdk 23
+- targetSdk 31
 - MVVM pattern : ViewModel, LiveData
 - DI : Hilt
 - Retrofit2, OkHttp3, Coroutines
