@@ -110,7 +110,7 @@
             android:layout_height="70dp"
             android:layout_marginHorizontal="30dp"
             android:enabled="false"
-            android:text="아이 이동반경 검사하기"
+            android:text="이동반경 내의 아이 상태 확인하기"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

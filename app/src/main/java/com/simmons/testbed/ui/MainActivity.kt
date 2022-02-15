@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             if (isRun) {
                 isRun = false
                 viewModel.stopCheck()
-                binding.btnSetBound.text = "아이 이동반경 검사하기"
+                binding.btnSetBound.text = "이동반경 내의 아이 상태 확인하기"
                 binding.tvCheckResult.visibility = View.INVISIBLE
                 binding.tvCheckResultTime.visibility = View.INVISIBLE
                 binding.tvCryResult.visibility = View.INVISIBLE
