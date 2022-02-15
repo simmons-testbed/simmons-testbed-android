@@ -22,6 +22,11 @@ class MainViewModel @Inject constructor(private val repository: SimmonsRepositor
     private val _howMany = MutableLiveData<String?>()
     val howMany: LiveData<String?> = _howMany
 
+    private val _cryType = MutableLiveData<Int?>()
+    val cryType: LiveData<Int?> = _cryType
+
+    private var currentId: Int = 0
+
     private val _isDataIsNotNull = MutableLiveData(false)
     val isDataIsNotNull: LiveData<Boolean> = _isDataIsNotNull
 
@@ -36,6 +41,9 @@ class MainViewModel @Inject constructor(private val repository: SimmonsRepositor
 
     private val _isValid = MutableLiveData<Boolean>()
     val isValid: LiveData<Boolean> = _isValid
+
+    private val _isCrying = MutableLiveData<Boolean>()
+    val isCrying: LiveData<Boolean> = _isCrying
 
     private val _checkStatus = MutableLiveData<Int>()
     val checkStatus: LiveData<Int> = _checkStatus
@@ -52,10 +60,15 @@ class MainViewModel @Inject constructor(private val repository: SimmonsRepositor
         _howMany.value = data
     }
 
+    fun setCryType(data: Int) {
+        _cryType.value = data
+    }
+
     fun setIsDataIsNotNull() {
         _isDataIsNotNull.value = _xBoundary.value != null
                 && _yBoundary.value != null
                 && _howMany.value != null
+                && _cryType.value != null
     }
 
     fun setData() {
@@ -63,14 +76,16 @@ class MainViewModel @Inject constructor(private val repository: SimmonsRepositor
         val y = _yBoundary.value ?: return
         val check = _nowCheck.value ?: return
         val count = _howMany.value ?: return
+        val cry = _cryType.value ?: return
 
         viewModelScope.launch {
             _isValidToSetBound.value = repository.setBound(x, y) == 200
             _isValidToSetStoreNum.value = repository.setStoreNum(check, count) == 200
+            repository.cryDetect(cry)?.let { currentId = it }
         }
     }
 
-    fun stopCheck(){
+    fun stopCheck() {
         viewModelScope.launch {
             _howMany.value = "0"
             _nowCheck.value = "0"
@@ -82,9 +97,10 @@ class MainViewModel @Inject constructor(private val repository: SimmonsRepositor
         _isValid.value = _isValidToSetBound.value == true && _isValidToSetStoreNum.value == true
     }
 
-    fun getCheckData(){
+    fun getCheckData() {
         viewModelScope.launch {
             _checkStatus.value = repository.getCheckStatus()
+            _isCrying.value = repository.getDetect(currentId) == 1
         }
     }
 }

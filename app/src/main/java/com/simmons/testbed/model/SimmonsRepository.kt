@@ -2,6 +2,8 @@ package com.simmons.testbed.model
 
 import com.google.gson.JsonObject
 import com.simmons.testbed.api.SimmonsAPI
+import com.simmons.testbed.api.response.CryDetectResponse
+import com.simmons.testbed.api.response.DetectResponse
 import javax.inject.Inject
 
 class SimmonsRepository @Inject constructor(private val simmonsAPI: SimmonsAPI) {
@@ -35,6 +37,26 @@ class SimmonsRepository @Inject constructor(private val simmonsAPI: SimmonsAPI) 
     suspend fun getCheckStatus(): Int? {
         return try {
             simmonsAPI.getCheckStatus().body()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun cryDetect(cryType: Int): Int? {
+        return try {
+            val jsonObject = JsonObject().apply {
+                addProperty("sound", cryType)
+            }
+
+            simmonsAPI.detectCry(jsonObject).body()?.id
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun getDetect(id: Int): Int? {
+        return try {
+            simmonsAPI.getDetect(id).body()?.result
         } catch (e: Exception) {
             null
         }

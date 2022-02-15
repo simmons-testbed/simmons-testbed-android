@@ -67,21 +67,25 @@
             app:layout_constraintTop_toBottomOf="@id/tv_cry">
 
             <RadioButton
+                android:id="@+id/rb_cry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1. 울음" />
 
             <RadioButton
+                android:id="@+id/rb_nose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2. 코골이" />
 
             <RadioButton
+                android:id="@+id/rb_laugh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3. 웃음" />
 
             <RadioButton
+                android:id="@+id/rb_silence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4. 침묵" />

@@ -23,9 +23,9 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private var isRun: Boolean = false
     private val handler = Handler(Looper.getMainLooper())
-    private val handlerTask = object: Runnable {
+    private val handlerTask = object : Runnable {
         override fun run() {
-            if (isRun){
+            if (isRun) {
                 viewModel.getCheckData()
                 handler.postDelayed(this, 1000)
             }
@@ -53,6 +53,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.howMany.observe(this, {
             viewModel.setIsDataIsNotNull()
         })
+        viewModel.cryType.observe(this, {
+            viewModel.setIsDataIsNotNull()
+        })
         viewModel.isDataIsNotNull.observe(this, {
             setButtonActive(it)
         })
@@ -72,7 +75,6 @@ class MainActivity : AppCompatActivity() {
         })
         viewModel.isValid.observe(this, {
             checkDataRepeated()
-//            viewModel.getCheckData()
         })
         viewModel.checkStatus.observe(this, {
             binding.tvCheckResult.visibility = View.VISIBLE
@@ -85,6 +87,10 @@ class MainActivity : AppCompatActivity() {
                 else -> return@observe
             }
             binding.tvCheckResultTime.text = LocalDateTime.now().format(formatter)
+        })
+        viewModel.isCrying.observe(this, {
+            binding.tvCryResult.visibility = View.VISIBLE
+            binding.tvCryResult.text = if (it) "아이가 울고 있습니다." else "아이가 울고 있지 않습니다."
         })
     }
 
@@ -142,15 +148,26 @@ class MainActivity : AppCompatActivity() {
                 binding.btnSetBound.text = "아이 이동반경 검사하기"
                 binding.tvCheckResult.visibility = View.INVISIBLE
                 binding.tvCheckResultTime.visibility = View.INVISIBLE
+                binding.tvCryResult.visibility = View.INVISIBLE
             } else {
                 isRun = true
                 viewModel.setData()
                 binding.btnSetBound.text = "중지하기"
             }
         }
+        binding.rgCrySelect.setOnCheckedChangeListener { _, checkedId ->
+            val cryType = when (checkedId) {
+                binding.rbCry.id -> 0
+                binding.rbNose.id -> 1
+                binding.rbLaugh.id -> 2
+                binding.rbSilence.id -> 3
+                else -> return@setOnCheckedChangeListener
+            }
+            viewModel.setCryType(cryType)
+        }
     }
 
-    private fun checkDataRepeated(){
+    private fun checkDataRepeated() {
         handler.post(handlerTask)
     }
 }
