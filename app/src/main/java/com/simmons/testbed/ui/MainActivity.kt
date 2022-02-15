@@ -1,5 +1,6 @@
 package com.simmons.testbed.ui
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private var isRun: Boolean = false
+    private var mediaPlayer: MediaPlayer? = null
     private val handler = Handler(Looper.getMainLooper())
     private val handlerTask = object : Runnable {
         override fun run() {
@@ -164,6 +166,27 @@ class MainActivity : AppCompatActivity() {
                 else -> return@setOnCheckedChangeListener
             }
             viewModel.setCryType(cryType)
+            binding.ivCryPlay.visibility = View.VISIBLE
+        }
+        binding.ivCryPlay.setOnClickListener {
+            playCryMedia()
+        }
+    }
+
+    private fun playCryMedia() {
+        viewModel.cryType.value?.let {
+            val cryFile = when (it) {
+                0 -> R.raw.realcry
+                1 -> R.raw.nosesound
+                2 -> R.raw.laugh
+                3 -> R.raw.silence
+                else -> return@let
+            }
+            if (mediaPlayer?.isPlaying == true) {
+                mediaPlayer!!.stop()
+            }
+            mediaPlayer = MediaPlayer.create(baseContext, cryFile)
+            mediaPlayer!!.start()
         }
     }
 
